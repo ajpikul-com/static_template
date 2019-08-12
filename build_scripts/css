@@ -12,4 +12,9 @@ fi
 
 . ${CONF_FILE}
 sudo -E -u nobody -- mkdir -p ${OUTPUT_DIR}/css
-sudo -E -u nobody -- ${SASS} --version
+for filename in ${ROOT_DIR}/sass/*.scss; do
+	filename=$(realpath $filename)
+	output=$(realpath ${OUTPUT_DIR}/css)/$(basename ${filename})
+	output=${output%.scss}.css
+	sudo -E -u nobody -- ${SASS} ${filename} ${output}
+done
