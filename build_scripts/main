@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if command -v contate > /dev/null 2>&1; then
+	CONTATE=contate
+elif [ -x ./build_tools/sources/contate/build/contate ]; then
+	CONTATE="./build_tools/sources/contate/build/contate"
+else
+	echo 'contate not found: you can install it from gihub.com/autopogo/contate or `git submodule update --init` and it can be used locally from the static_template repo'
+	exit 1
+fi
+
+sudo -E -u nobody -- rm public/* -rf
+sudo -E -u nobody -- ${CONTATE} -rc conf/default.contate -o public/ raw/
