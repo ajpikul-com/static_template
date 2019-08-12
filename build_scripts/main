@@ -11,3 +11,4 @@ fi
 
 sudo -E -u nobody -- rm public/* -rf
 sudo -E -u nobody -- ${CONTATE} -rc conf/default.contate -o public/ raw/
+sudo -E -u nobody -- rsync -avz --exclude '*.contate' raw/ public/
