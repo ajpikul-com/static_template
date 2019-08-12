@@ -10,4 +10,6 @@ else
 	exit
 fi
 
-${SASS} --version
+. ${CONF_FILE}
+sudo -E -u nobody -- mkdir -p ${OUTPUT_DIR}/css
+sudo -E -u nobody -- ${SASS} --version
