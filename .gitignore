@@ -21,3 +21,5 @@ public/
 build_tools/toolchain/prefixer/*
 !build_tools/toolchain/prefixer/README.md
 stage/
+build_tools/sources/libsass
+build_tools/sources/sass-spec

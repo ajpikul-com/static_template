@@ -23,6 +23,9 @@ sassc_func
 
 prefixer(){
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/prefixer/package-lock.json ]; then
+		if ! ls -A ${OUTPUT_DIR}/css/*.css > /dev/null 2>&1; then
+			return
+		fi
 		if command -v npx > /dev/null 22>&1; then
 			pushd ${ROOT_DIR}/build_tools/toolchain/prefixer/
 			sudo -E -u nobody -- npx postcss ${OUTPUT_DIR}/css/*.css --no-map --use autoprefixer -d ${OUTPUT_DIR}/css/
