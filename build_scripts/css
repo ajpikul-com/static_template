@@ -28,7 +28,7 @@ sassc_func
 prefixer(){
 	echo "prefixing"
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/prefixer/package-lock.json ]; then
-		if ! ls -A ${OUTPUT_DIR}/css/*.css > /dev/null 2>&1; then
+		if ! ls -A "${OUTPUT_DIR}/css/*.css" > /dev/null 2>&1; then
 			return
 		fi
 		if command -v npx > /dev/null 22>&1; then
