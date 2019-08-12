@@ -2,6 +2,7 @@
 shopt -s nullglob
 . ${CONF_FILE}
 sassc_func(){ 
+	echo "sassc"
 	if command -v sassc > /dev/null 2>&1; then
 		SASS=sassc
 	elif [ -x './build_tools/sources/sassc/bin/sassc' ]; then
@@ -14,17 +15,20 @@ sassc_func(){
 
 	sudo -E -u nobody -- mkdir -p ${OUTPUT_DIR}/css
 	for filename in ${ROOT_DIR}/sass/*.scss; do
-		filename=$(realpath $filename)
-		output=$(realpath ${OUTPUT_DIR}/css)/$(basename ${filename})
-		output=${output%.scss}.css
-		sudo -E -u nobody -- ${SASS} ${filename} ${output}
+		if [ -r "$filename" ] && [ -f "$filename" ]; then
+			filename=$(realpath $filename)
+			output=$(realpath ${OUTPUT_DIR}/css)/$(basename ${filename})
+			output=${output%.scss}.css
+			sudo -E -u nobody -- ${SASS} ${filename} ${output}
+		fi
 	done
 }
 sassc_func
 
 prefixer(){
+	echo "prefixing"
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/prefixer/package-lock.json ]; then
-		if ! ls -A ${OUTPUT_DIR}/css/*.css > /dev/null 2>&1; then
+		if ! ls -A ${OUTPUT_DIR&}/css/*.css > /dev/null 2>&1; then
 			return
 		fi
 		if command -v npx > /dev/null 22>&1; then
