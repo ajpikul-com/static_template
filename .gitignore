@@ -20,3 +20,4 @@ gerbers/
 public/
 build_tools/toolchain/prefixer/*
 !build_tools/toolchain/prefixer/README.md
+stage/
