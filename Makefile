@@ -4,6 +4,16 @@ export CONF_FILE ?= ./conf/default.contate
 
 all: clean clean_css contate css
 
+stage: export CONF_FILE = ./conf/stage.contate
+stage: all
+ifeq (, $(STAGE_DIR))
+	echo "****"
+	echo "Please specify a STAGE_DIR"
+	echo "****"
+	exit 1
+endif
+	rsync -tr --delete stage/ $(STAGE_DIR)
+
 clean: 
 	build_scripts/clean
 
