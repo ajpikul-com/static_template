@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if command -v sassc > /dev/null 2>&1; then
+	SASS=sassc
+elif [ -x './build_tools/sources/sassc/bin/sassc' ]; then
+	SASS='./build_tools/sources/sassc/bin/sassc'
+else
+	echo "At this moment, the only sass tool build_scripts/css supports is sassc. You can install it yourself or build the submodule in the build_tools directory, or modify build_scripts/css."
+	echo 'At time of writing (Aug 2019), cloning github.com/sass/sassc, running `. scripts/bootstrap` inside of it, and `make` is enough. It created two folders:sass-spec and libsass in the same directory as sassc, which can be deleted safely.'
+	exit
+fi
+
+${SASS} --version
