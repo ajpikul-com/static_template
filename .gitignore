@@ -18,3 +18,5 @@ gerbers.zip
 gerbers/
 *.lck
 public/
+build_tools/toolchain/prefixer/*
+!build_tools/toolchain/prefixer/README.md

@@ -1,5 +1,4 @@
 #!/bin/bash
 . ${CONF_FILE}
 echo ${CONF_FILE}: ${OUTPUT_DIR}
-exit 0
 sudo -E -u nobody -- rm ${OUTPUT_DIR}/css -rf
