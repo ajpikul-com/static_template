@@ -20,3 +20,14 @@ I highly recommend custom Makefile targets to stage and deploy.
 
 `mkdir public && sudo chown nobody:nogroup public/`
 
+## "installation"
+
+```
+git clone https://github.com/ayjayt/static_template my_new_website`
+cd my_new_website
+rm README.md
+git submodule update --init
+git remote remove origin
+git remote add origin https://github.com/user/my_new_website
+git remote add template https://github.com/ayjayt/static_template
+```
