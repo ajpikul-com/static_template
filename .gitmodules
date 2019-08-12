@@ -1,0 +1,3 @@
+[submodule "build_tools/sources/contate"]
+	path = build_tools/sources/contate
+	url = https://github.com/autopogo/contate
