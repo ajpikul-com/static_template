@@ -14,6 +14,16 @@ ifeq (, $(STAGE_DIR))
 endif
 	rsync -tr --delete stage/ $(STAGE_DIR)
 
+deploy: export CONF_FILE = ./conf/deploy.contate
+deploy: all
+ifeq (, $(PRODUCTION_DIR))
+	echo "****"
+	echo "Please specify a PRODUCTION_DIR"
+	echo "****"
+	exit 1
+endif
+	rsync -tr --delete stage/ $(PRODUCTION_DIR)
+
 clean: 
 	build_scripts/clean
 
