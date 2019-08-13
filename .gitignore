@@ -22,6 +22,7 @@ build_tools/toolchain/prefixer/*
 build_tools/toolchain/eslint/*
 !build_tools/toolchain/prefixer/README.md
 !build_tools/toolchain/eslint/README.md
+!build_tools/toolchain/eslint/.eslintrc.yml
 stage/
 build_tools/sources/libsass
 build_tools/sources/sass-spec
