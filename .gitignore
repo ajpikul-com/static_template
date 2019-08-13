@@ -19,10 +19,10 @@ gerbers/
 *.lck
 public/
 build_tools/toolchain/prefixer/*
-build_tools/toolchain/eslint/*
+build_tools/toolchain/eslint/node_modules
+build_tools/toolchain/eslint/package.json
+build_tools/toolchain/eslint/package-lock.json
 !build_tools/toolchain/prefixer/README.md
-!build_tools/toolchain/eslint/README.md
-!build_tools/toolchain/eslint/.eslintrc.yml
 stage/
 build_tools/sources/libsass
 build_tools/sources/sass-spec
