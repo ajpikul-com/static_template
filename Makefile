@@ -38,3 +38,6 @@ css: clean_css
 
 lint:
 	build_scripts/lint
+
+eslint:
+	build_scripts/javascript
