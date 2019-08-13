@@ -1,0 +1,76 @@
+#!/bin/bash
+
+. ${CONF_FILE}
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+#check list (link):
+#html X
+#bootstrap X
+#svg X
+#css X
+#javascript
+#wasm
+#jpg
+#png
+
+echo -e "${RED}THE OPTIMIZER SCRIPT CAN BE EXPANDED TO LINT WASM${NC}"
+echo -e "${RED}IT CAN LOOK FOR BROKEN LINKS BUT THAT WOULD BE ANNOYING IN DEV${NC}"
+echo -e "${RED}IT CAN MINIFY AND COMPRESS AND SPEED CHECK TOO${NC}"
+echo -e "${RED}BUT THIS NEEDS TO BE FLAGGABLE AS SAID${NC}"
+echo -e "${RED}**********************************************************${NC}"
+
+echo "OUTPUT_DIR: ${OUTPUT_DIR}"
+if [ -z "${OUTPUT_DIR}" ]; then
+	echo -e "${RED}You need to define OUTPUT_DIR so I know what to lint!${NC}"
+	exit
+fi
+
+if [ -z "${ROOT_DIR}" ]; then
+	echo -e "${RED}You need to define ROOT_DIR so I know what to lint!${NC}"
+	exit
+fi
+
+function HTMLBasic {
+ echo -e "${GREEN}Checking... html $1 w/ validator.w3.org${NC}"
+ curl -H "Content-type: text/html; charset=utf-8" \
+	 --data-binary @${1} \
+	 https://validator.w3.org/nu/?out=gnu 
+}
+
+function SVGBasic {
+ echo -e "${GREEN}Checking... svg $1 w/ validator.w3.org${NC}"
+ curl -H "Content-type: image/svg+xml; charset=utf-8" \
+	 --data-binary @${1} \
+	 https://validator.w3.org/nu/?out=gnu 
+}
+
+function CSSBasic {
+ echo -e "${GREEN}Checking... csd $1 w/ validator.w3.org${NC}"
+ curl -H "Content-type:text/css; charset=utf-8" \
+	 --data-binary @${1} \
+	 https://validator.w3.org/nu/?out=gnu 
+}
+
+# For just HTML
+while read -r file; do
+	if [ -z "$file" ]; then
+		continue
+	fi
+	HTMLBasic $file 2>&1 #i don't really want linters throwing errors so i redirect all error output to standard output
+done <<< "$(find ${OUTPUT_DIR} -type f -name *.html)"
+
+while read -r file; do
+	if [ -z "$file" ]; then
+		continue
+	fi
+	CSSBasic $file 2>&1
+done <<< "$(find ${OUTPUT_DIR} -type f -name *.css)"
+
+while read -r file; do
+	if [ -z "$file" ]; then
+		continue
+	fi
+	SVGBasic $file 2>&1
+done <<< "$(find ${OUTPUT_DIR} -type f -name *.svg)"

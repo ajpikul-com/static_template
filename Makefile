@@ -35,3 +35,6 @@ contate: clean
 
 css: clean_css
 	build_scripts/css
+
+lint:
+	build_scripts/lint
