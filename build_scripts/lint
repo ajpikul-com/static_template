@@ -33,10 +33,29 @@ if [ -z "${ROOT_DIR}" ]; then
 fi
 
 function HTMLBasic {
- echo -e "${GREEN}Checking... html $1 w/ validator.w3.org${NC}"
- curl -H "Content-type: text/html; charset=utf-8" \
-	 --data-binary @${1} \
-	 https://validator.w3.org/nu/?out=gnu 
+	echo -e "${GREEN}Checking... html $1 w/ validator.w3.org${NC}"
+	curl -H "Content-type: text/html; charset=utf-8" \
+		--data-binary @${1} \
+		https://validator.w3.org/nu/?out=gnu 
+	if command -v aspell &> /dev/null; then
+		for line in $(cat "${1}" | aspell -H list); do
+			if [ ! -f "${ROOT_DIR}/build_tools/dictionary" ]; then
+				touch "${ROOT_DIR}/build_tools/dictionary"
+			fi
+			if ! grep -q "${ROOT_DIR}/build_tools/dictionary" -e "^$line\$"; then
+				echo ${1}: $line
+				if [ "$INTERACTIVE" = "true" ]; then
+					echo "Add ${line} to dict? Y/n"
+					read ANSW
+					if [ "$ANSW" = "y" ] || [ "$ANSW" = "Y" ]; then
+						echo "$line" >> "${ROOT_DIR}/build_tools/dictionary"
+					fi
+				fi
+			fi
+		done
+	else
+		echo "Install aspell for spellcheck"
+	fi
 }
 
 function SVGBasic {
@@ -54,12 +73,15 @@ function CSSBasic {
 }
 
 # For just HTML
-while read -r file; do
+(
+shopt -s globstar
+for file in ${OUTPUT_DIR}/**/*.html; do
 	if [ -z "$file" ]; then
 		continue
 	fi
 	HTMLBasic $file 2>&1 #i don't really want linters throwing errors so i redirect all error output to standard output
-done <<< "$(find ${OUTPUT_DIR} -type f -name *.html)"
+done 
+)
 
 while read -r file; do
 	if [ -z "$file" ]; then

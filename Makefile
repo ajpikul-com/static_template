@@ -1,6 +1,9 @@
 export CONF_FILE ?= ./conf/default.contate
 
-.PHONY: all clean contate css
+.PHONY: all clean contate css stage lint eslint lintspell
+
+export STAGE_DIR="/var/www/stage.ajpikul.com"
+export PRODUCTION_DIR="/var/www/ajpikul.com"
 
 all: clean clean_css contate css
 
@@ -22,7 +25,7 @@ ifeq (, $(PRODUCTION_DIR))
 	echo "****"
 	exit 1
 endif
-	rsync -tr --delete stage/ $(PRODUCTION_DIR)
+	rsync -tr --delete deploy/ $(PRODUCTION_DIR)
 
 clean: 
 	build_scripts/clean
@@ -38,6 +41,10 @@ css: clean_css
 
 lint:
 	build_scripts/lint
+
+lintspell: export INTERACTIVE=true
+lintspell:
+	/bin/bash build_scripts/lint
 
 eslint:
 	build_scripts/javascript
