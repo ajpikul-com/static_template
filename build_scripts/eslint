@@ -1,0 +1,28 @@
+#!/bin/bash
+shopt -s nullglob
+. ${CONF_FILE}
+
+eslint_func(){
+	echo "eslint"
+	if [ -e ${ROOT_DIR}/build_tools/toolchain/eslint/package-lock.json ]; then
+		shopt -u nullglob
+		if ! { ls -A ${ROOT_DIR}/raw/js/**/*.js || ls -A ${ROOT_DIR}/ts/**/*.ts > /dev/null; } 2> /dev/null; then
+			echo "No javascript or typescript files"
+			shopt -s nullglob
+			return
+		fi
+		shopt -s nullglob
+		if command -v npx > /dev/null 22>&1; then
+			pushd ${ROOT_DIR}/build_tools/toolchain/eslint/
+			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/ts/**/*.{js,ts}"
+			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/raw/js/**/*.{js,ts}"
+			popd
+		else
+			echo "npx not found"
+			return
+		fi
+	else 
+		echo 'eslint not found, check its readme in that folder in build_tools/toolchain'
+	fi
+}
+eslint_func
