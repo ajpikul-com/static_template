@@ -13,5 +13,5 @@ if [ ! -d ${OUTPUT_DIR} ]; then
 	echo "Output directory doesn't exist"
 	exit 1
 fi
-sudo -E -u nobody -- ${CONTATE} -rc conf/default.contate -o ${OUTPUT_DIR}/ raw/
+sudo -E -u nobody -- ${CONTATE} -rc ${CONF_FILE} -o ${OUTPUT_DIR}/ raw/
 sudo -E -u nobody -- rsync -vvrit --exclude '*.contate' --exclude '.*' raw/ ${OUTPUT_DIR}/
