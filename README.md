@@ -22,7 +22,7 @@ I create a `fragments` folder where common elements are stored.
 ## "installation"
 
 ```
-git clone https://github.com/ayjayt/static_template my_new_website`
+git clone https://github.com/ayjayt/static_template <my_new_website>`
 cd my_new_website
 rm README.md
 git submodule update --init
@@ -33,8 +33,7 @@ Read the README's in the folders in `build_tools/toolchain` to build your linter
 That will install a spell checker.
 ```
 git remote remove origin
-git remote add origin https://github.com/user/my_new_website
-git remote add template https://github.com/ayjayt/static_template
+git remote add origin https://github.com/<user>/<my_new_website>
 ```
 
 Edit the Makefile and write in your stage and production directory. In my build system, these directories 
