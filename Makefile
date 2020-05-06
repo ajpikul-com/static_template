@@ -5,7 +5,7 @@ export CONF_FILE ?= ./conf/default.contate
 export STAGE_DIR=""
 export PRODUCTION_DIR=""
 
-all: clean clean_css contate css
+all: clean clean_css clan_tsc contate css tsc
 
 stage: export CONF_FILE = ./conf/stage.contate
 stage: all
@@ -34,7 +34,7 @@ clean_css:
 	build_scripts/clean_css
 
 clean_tsc:
-	biuild_scripts/clean_js
+	build_scripts/clean_js
 
 contate: clean
 	build_scripts/main
