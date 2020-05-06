@@ -29,22 +29,35 @@ git submodule update --init
 cd build_tools/toolchain
 ```
 Read the README's in the folders in `build_tools/toolchain` to build your linter (js) and your css-prefixer.
+
 `sudo apt-get install aspell`
+
 That will install a spell checker.
 ```
+cd -
+cd build_tools/sources/sassc
+. scripts/bootstrap
+make
+```
+you can delete sass-spec and libsass
+```
+cd -
 git remote remove origin
 git remote add origin https://github.com/<user>/<my_new_website>
 ```
 
-Edit the Makefile and write in your stage and production directory. In my build system, these directories 
+Edit the Makefile and write in your stage and production directory. In my build system, these directories are in /var/www.
 
 ### permissions
 
 `contate` expects to be run as a "nobody" user- the makefile does this automatically. This is forced as a security precaution. In this way, any script run will only have write access to folders it was explicitly given. This is important because we're executing arbitrary scripts.
 
-`mkdir public && sudo chown nobody:nogroup public/`
-`mkdir stage && sudo chown nobody:nogroup stage/`
-`mkdir deploy && sudo chown nobody:nogroup deploy/`
+
+```
+mkdir public && sudo chown nobody:nogroup public/
+mkdir stage && sudo chown nobody:nogroup stage/
+mkdir deploy && sudo chown nobody:nogroup deploy/
+```
 
 ## using
 
@@ -52,15 +65,21 @@ This template relies on a Makefile and the following `make` targets:
 
 ###
 `all` (default target) - clean public and build raw to it, recompile css
+
 `stage` - clean stage outputdir and build raw to it, recompile css, and sync to stage folder
+
 `deploy` - clean deploy outputdir, and build raw to it, recompile css, and sync to deploy folder 
 
 ### linting
 `lint` - all kind of web and local based html linting
+
 `lintspell` - make the spell checker interactive and allow you add words to a dictionary
+
 `eslint` - lint the javascript
 
 ### internal
 `contate` - run contate
+
 `clean` - delete everything in outputdir except css
+
 `clean_css` - delete css in outputdir
