@@ -33,11 +33,17 @@ clean:
 clean_css:
 	build_scripts/clean_css
 
+clean_tsc:
+	biuild_scripts/clean_js
+
 contate: clean
 	build_scripts/main
 
 css: clean_css
 	build_scripts/css
+
+tsc: clean_tsc
+	build_scripts/typescript
 
 lint:
 	build_scripts/lint
@@ -47,4 +53,7 @@ lintspell:
 	/bin/bash build_scripts/lint
 
 eslint:
-	build_scripts/javascript
+	build_scripts/eslint
+
+tsling:
+	#place holder
