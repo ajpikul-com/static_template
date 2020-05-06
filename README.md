@@ -12,7 +12,7 @@ The `Makefile` will build the `*.contate` files in the `/raw` folder, and copy t
 
 ## contate
 
-It relies on [contate](https://github.com/autopogo/contate),
+It relies on [contate](https://github.com/autopogo/contate).
 
 You should look at contate's instructions. In short, your web pages are parsed as scripts and can pass variables between each other. `*.contate` files in `/raw` will be compiled with contate. Other files will be copied as-is.
 Use conf files to pass global environmental files to your contate files, they all source the `/conf/common` file.
@@ -21,7 +21,7 @@ I create a `fragments` folder where common elements are stored.
 
 ## installation
 
-modify the `Makefile` so that `PRODUCTION_DIR` and `STAGE_DIR` point to your actively served web directories.
+Modify the `Makefile` so that `PRODUCTION_DIR` and `STAGE_DIR` point to your actively served web directories.
 ```
 git clone https://github.com/ayjayt/static_template <my_new_website>`
 cd my_new_website
