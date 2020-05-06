@@ -2,8 +2,8 @@ export CONF_FILE ?= ./conf/default.contate
 
 .PHONY: all clean contate css stage lint eslint lintspell
 
-export STAGE_DIR="/var/www/stage.ajpikul.com"
-export PRODUCTION_DIR="/var/www/ajpikul.com"
+export STAGE_DIR=""
+export PRODUCTION_DIR=""
 
 all: clean clean_css contate css
 

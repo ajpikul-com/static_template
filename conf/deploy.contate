@@ -1,4 +1,4 @@
 #!/bin/bash
 export ROOT_DIR="$(git rev-parse --show-toplevel)"
-export OUTPUT_DIR="$(realpath $ROOT_DIR/public/)"
+export OUTPUT_DIR="$(realpath $ROOT_DIR/deploy/)"
 # Contate can handle no #!
