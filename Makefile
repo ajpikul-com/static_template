@@ -55,5 +55,3 @@ lintspell:
 eslint:
 	build_scripts/eslint
 
-tsling:
-	#place holder
