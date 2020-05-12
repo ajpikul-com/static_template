@@ -1,0 +1,39 @@
+#!/bin/bash
+shopt -s nullglob
+. ${CONF_FILE}
+webpack_func(){ 
+	if [ -e ${ROOT_DIR}/build_tools/toolchain/webpack/package-lock.json ]; then
+		shopt -u nullglob
+		if ls -A ${ROOT_DIR}/ts/**/*.ts 2> /dev/null; then
+			shopt -s nullglob
+			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
+			sudo -E -u nobody -- npx webpack --entry "${ROOT_DIR}/ts/main.ts" --output "${OUTPUT_DIR}/js/bundle.js" --config "${ROOT_DIR}/build_tools/toolchain/webpack/webpack.tsconfig.js"
+			popd
+		elif ls -A ${ROOT_DIR}/js/**/*.js 2> /dev/null; then
+			shopt -s nullglob
+			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
+			sudo -E -u nobody -- npx webpack --entry "${ROOT_DIR}/js/main.js" --output "${OUTPUT_DIR}/js/bundle.js"
+			popd
+		else
+			return 1
+		fi
+		shopt -s nullglob
+	else
+		echo "webpack not found, assuming not used"
+		return 1
+	fi
+	return 0
+}
+
+tsc_func(){ 
+	echo "tsc"
+	if ! command -v tsc > /dev/null 2>&1; then
+		echo "To compile typescript, you're expected to install node-typescript in a normal way"
+		return
+	fi
+	sudo -E -u nobody -- mkdir -p "${OUTPUT_DIR}/js" || exit
+	sudo -E -u nobody -- tsc -p "${ROOT_DIR}/ts/" --outDir "${OUTPUT_DIR}/js/"
+}
+if ! webpack_func; then
+	tsc_func
+fi

@@ -15,7 +15,7 @@ eslint_func(){
 		if command -v npx > /dev/null 22>&1; then
 			pushd ${ROOT_DIR}/build_tools/toolchain/eslint/
 			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/ts/**/*.{js,ts}"
-			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/raw/js/**/*.{js,ts}"
+			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/raw/js/**/*.{js}"
 			popd
 		else
 			echo "npx not found"

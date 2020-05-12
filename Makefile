@@ -1,11 +1,11 @@
 export CONF_FILE ?= ./conf/default.contate
 
-.PHONY: all clean contate css stage lint eslint lintspell
+.PHONY: all clean contate css stage lint eslint lintspell clean_css clean_js jstranspile
 
 export STAGE_DIR=""
 export PRODUCTION_DIR=""
 
-all: clean clean_css clan_tsc contate css tsc
+all: clean clean_css clean_js contate css jstranspile
 
 stage: export CONF_FILE = ./conf/stage.contate
 stage: all
@@ -33,7 +33,7 @@ clean:
 clean_css:
 	build_scripts/clean_css
 
-clean_tsc:
+clean_js:
 	build_scripts/clean_js
 
 contate: clean
@@ -42,8 +42,8 @@ contate: clean
 css: clean_css
 	build_scripts/css
 
-tsc: clean_tsc
-	build_scripts/typescript
+jstranspile: clean_js
+	build_scripts/jstranspile
 
 lint:
 	build_scripts/lint

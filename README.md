@@ -4,9 +4,10 @@ Static template is a set of non-content files to facilitate a new website. Like 
 
 ## quick
 
-If you're not setting up the environment, the only three folders you need to worry about are `sass/` (which contains css), `raw/` (which is what turns into the webpage), and `fragments/` (which are the library of resuable HTML that `raw/` can use). The `sass` file is compiled to a `css/` folder directly in the output directory.
+If you're not setting up the environment, the three most important folders are `sass/` (which contains css), `raw/` (which is what turns into the webpage), and `fragments/` (which are the library of resuable HTML that `raw/` can use). The `sass` file is compiled to a `css/` folder directly in the output directory.
 
-If you use typescript (a good option), the `ts/` folder will be compiled to the outputdirectory's `/js` folder in the same way as sass. You're expected to install `tsc` normally.
+If you use typescript (a good option), the `ts/` folder will be compiled to the output directory's `/js` folder in the same way as sass. You're expected to install `tsc` normally.
+There is an option (in the `build_tools/toolchain` section referenced in #installation) to install and use webpack.
 
 The `Makefile` will build the `*.contate` files in the `/raw` folder, and copy them all over to the output directory. The output directory is set by a file in `conf/`, and is by default `/public` but has examples for `/stage` and `/deploy`. See the [using](#using) section for Makefile targets.
 

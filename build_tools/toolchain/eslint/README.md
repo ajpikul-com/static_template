@@ -2,7 +2,7 @@
 
 If you want to use typescript linting:
 
-`npm isntall typescript@latest`
+`npm install typescript@latest`
 
 Now you will set up a configuration:
 
