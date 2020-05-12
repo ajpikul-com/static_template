@@ -6,7 +6,7 @@ eslint_func(){
 	echo "eslint"
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/eslint/package-lock.json ]; then
 		shopt -u nullglob
-		if ! { ls -A ${ROOT_DIR}/raw/js/**/*.js || ls -A ${ROOT_DIR}/ts/**/*.ts > /dev/null; } 2> /dev/null; then
+		if ! { ls -A ${ROOT_DIR}/raw/js/**/*.js || ls -A ${ROOT_DIR}/ts/**/*.ts; } &> /dev/null; then
 			echo "No javascript or typescript files"
 			shopt -s nullglob
 			return

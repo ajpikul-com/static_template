@@ -4,8 +4,10 @@ export CONF_FILE ?= ./conf/default.contate
 
 export STAGE_DIR=""
 export PRODUCTION_DIR=""
+export WEBPACK_MODE = "development"
 
 all: clean clean_css clean_js contate css jstranspile
+
 
 stage: export CONF_FILE = ./conf/stage.contate
 stage: all
@@ -17,6 +19,7 @@ ifeq (, $(STAGE_DIR))
 endif
 	rsync -tr --delete stage/ $(STAGE_DIR)
 
+deploy: export WEBPACK_MODE = "production"
 deploy: export CONF_FILE = ./conf/deploy.contate
 deploy: all
 ifeq (, $(PRODUCTION_DIR))

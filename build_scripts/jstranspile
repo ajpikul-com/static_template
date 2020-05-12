@@ -4,15 +4,19 @@ shopt -s nullglob
 webpack_func(){ 
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/webpack/package-lock.json ]; then
 		shopt -u nullglob
+		DEBUG_LINE=''
+		if [ "${WEBPACK_MODE}" = "\"development\"" ]; then
+			DEBUG_LINE='--debug --devtool "inline-source-map"'
+		fi
 		if ls -A ${ROOT_DIR}/ts/**/*.ts 2> /dev/null; then
 			shopt -s nullglob
 			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
-			sudo -E -u nobody -- npx webpack --entry "${ROOT_DIR}/ts/main.ts" --output "${OUTPUT_DIR}/js/bundle.js" --config "${ROOT_DIR}/build_tools/toolchain/webpack/webpack.tsconfig.js"
+			sudo -E -u nobody -- npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/ts/main.ts" --output "${OUTPUT_DIR}/js/bundle.js" --config "${ROOT_DIR}/build_tools/toolchain/webpack/webpack.tsconfig.js"
 			popd
 		elif ls -A ${ROOT_DIR}/js/**/*.js 2> /dev/null; then
 			shopt -s nullglob
 			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
-			sudo -E -u nobody -- npx webpack --entry "${ROOT_DIR}/js/main.js" --output "${OUTPUT_DIR}/js/bundle.js"
+			sudo -E -u nobody -- npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/js/main.js" --output "${OUTPUT_DIR}/js/bundle.js"
 			popd
 		else
 			return 1
@@ -26,13 +30,13 @@ webpack_func(){
 }
 
 tsc_func(){ 
-	echo "tsc"
+	echo "tsc- warning: sourceMap options untested (debugging)"
 	if ! command -v tsc > /dev/null 2>&1; then
 		echo "To compile typescript, you're expected to install node-typescript in a normal way"
 		return
 	fi
 	sudo -E -u nobody -- mkdir -p "${OUTPUT_DIR}/js" || exit
-	sudo -E -u nobody -- tsc -p "${ROOT_DIR}/ts/" --outDir "${OUTPUT_DIR}/js/"
+	sudo -E -u nobody -- tsc --inlineSourceMap --inlineSources -p "${ROOT_DIR}/ts/" --outDir "${OUTPUT_DIR}/js/"
 }
 if ! webpack_func; then
 	tsc_func
