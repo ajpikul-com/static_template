@@ -14,14 +14,19 @@ sassc_func(){
 	fi
 
 	sudo -E -u nobody -- mkdir -p ${OUTPUT_DIR}/css
-	for filename in ${ROOT_DIR}/sass/*.scss; do
-		if [ -r "$filename" ] && [ -f "$filename" ]; then
-			filename=$(realpath $filename)
-			output=$(realpath ${OUTPUT_DIR}/css)/$(basename ${filename})
+	shopt -s globstar
+	for filename in $(realpath ${ROOT_DIR})/sass/**/*.scss; do
+		if [[ "$(basename ${filename})" = "_"* ]]; then
+			continue
+		elif [ -r "$filename" ] && [ -f "$filename" ]; then
+			output=$(realpath ${OUTPUT_DIR}/css)/${filename#"$(realpath ${ROOT_DIR})/sass/"}
 			output=${output%.scss}.css
+			output_dir=$(dirname ${output})
+			sudo -E -u nobody -- mkdir -p ${output_dir}
 			sudo -E -u nobody -- ${SASS} ${filename} ${output}
 		fi
 	done
+	shopt -u globstar
 }
 sassc_func
 
