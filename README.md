@@ -30,6 +30,8 @@ I create a `fragments` folder where common elements are stored.
 
 ## installation
 
+Install `tsc` globally if you're using typescript. Everything else has a local install (unless noted).
+
 Modify the `Makefile` so that `PRODUCTION_DIR` and `STAGE_DIR` point to your actively served web directories.
 ```
 git clone https://github.com/ayjayt/static_template <my_new_website>`
