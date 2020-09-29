@@ -1,0 +1,2 @@
+#!/bin/bash
+git diff template/master master -- $(git diff --name-status template/master master | grep -ve ^A | grep -ve README.md | grep -ve 'conf/.*' | cut -f2-)
