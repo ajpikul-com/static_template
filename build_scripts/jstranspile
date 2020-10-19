@@ -23,18 +23,20 @@ webpack_func(){
 		fi
 		shopt -s nullglob
 	else
-		echo "webpack not found, assuming not used"
+		echo "Webpack not found, assuming not used."
 		return 1
 	fi
 	return 0
 }
 
 tsc_func(){ 
-	echo "tsc- warning: sourceMap options untested (debugging)"
 	if ! command -v tsc > /dev/null 2>&1; then
-		echo "To compile typescript, you're expected to install node-typescript in a normal way"
+		echo "To compile typescript, you're expected to install node-typescript in a normal way."
+		echo "You're using vanilla javascript?"
 		return
 	fi
+	echo "tsc- warning: sourceMap options untested (debugging). Should allow debugging in original"
+	echo "Typescript instead of hwat is compiled to. Definitely works with webpack"
 	sudo -E -u nobody -- mkdir -p "${OUTPUT_DIR}/js" || exit
 	sudo -E -u nobody -- tsc --inlineSourceMap --inlineSources -p "${ROOT_DIR}/ts/" --outDir "${OUTPUT_DIR}/js/"
 }
