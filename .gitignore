@@ -17,7 +17,6 @@ node_modules/*
 gerbers.zip
 gerbers/
 *.lck
-public/
 build_tools/toolchain/prefixer/*
 build_tools/toolchain/eslint/*
 build_tools/toolchain/webpack/*
@@ -26,6 +25,5 @@ build_tools/toolchain/webpack/*
 !build_tools/toolchain/webpack/README.md
 !build_tools/toolchain/webpack/package.json
 !build_tools/toolchain/webpack/webpack.tsconfig.js
-stage/
 build_tools/sources/libsass
 build_tools/sources/sass-spec
