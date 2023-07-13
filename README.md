@@ -28,28 +28,21 @@ More:
 
 (both explained below)
 
-## Key features:
-
-1) Static HTML Compilation
-2) CSS Compilation
-4) Typescript compilation (w/ or w/o debug)
-3) Linters
-5) Staging/Release deployments
-
 ## Basic Use
 
 TODO: Include your usual usual setup for /var/ with ACL
 
-Since `make` attempts to run almost everything as the nobody user, you must, from the main directory:
+Generally, hidden files (`.*`) are ignored by this software.
+
+Since `make` attempts to run almost everything as the `nobody:nogroup` user, you must, from the main directory:
 
 ```
 sudo chown -R nobody:nogroup compiled/
 ```
 
-Generally, hidden files (`.*`) are ignored.
-
 Specify your deployment directories in `conf/make.conf` by setting `STAGE_SYNC_DIR=` and `PRODUCTION_SYNC_DIR=`
 
+### Make Commands 
 `make all` will clean compiled/public/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/public.
 
 `make stage` will clean compiled/stage/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/stage, and sync to your `STAGE_DIR`.
