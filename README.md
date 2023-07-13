@@ -80,11 +80,13 @@ Or just have it installed and in `PATH`.
 
 You can keep javascript in a `raw/js` folder which will overwrite all other javascript. Or use another folder and don't worry about write order. If `webpack` is installed (via `/build_tools/toolchain/webpack`, where there is a proper `config` for typescript) and `tsc` is installed, `webpack` will first look to compile stuff in `ts/` and then in `js/`, but not both.  If `tsc` is installed, it will output w/o `webpack`'s help. `tsc` will use `ts/.tsconfig.json`. 
 
+Everything gets comiled to `compiled/js` before copied to the proper output directory.
+
 ### CSS/Sassc
 
 #### Sass
 
-You can keep css in a `raw/css/` folder which will overwrite anything compiled from sass, if you're using sass. You can also use a different folder altogether and skip the system.
+You can keep css in a `raw/css/` folder which will overwrite anything compiled from `sass`, if you're using `sassc`. You can also use a different path and forget about write order.
 
 You can put sass files in the `sass/` folder if you want to use sass. You need to have `sassc` installed:
 
@@ -92,8 +94,9 @@ You can put sass files in the `sass/` folder if you want to use sass. You need t
 git submodule update --init build_tools/sources/sassc
 # or
 git submodule update --init
+# for everything in .gitmodules
 ```
-In `/build_tools/sources/sassc`
+Then, In `/build_tools/sources/sassc`
 ```
 . scripts/bootstrap
 make
@@ -105,7 +108,6 @@ make
 
 You can also use a prefixer which will look at your css in `compiled/css` and amend it so that it works in as many browsers as possible. 
 To use the prefixer, you must have it installed.
-TODO what is that non-source folder. must have npx installe for prefixer
 
 #### Linters
 
