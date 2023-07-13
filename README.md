@@ -1,6 +1,6 @@
 # Static Template
 
-Static template is a development environment for producing a static website. It integrates `make` w:
+Static template is a development environment for producing a static website. It integrates `make` with:
 * html fragments --> html
 * typescript --> javascript
 * sass --> prefixing --> css
