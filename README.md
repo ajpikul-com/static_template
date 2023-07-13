@@ -1,25 +1,34 @@
 # Static Template
 
-Static template is a development environment for producing a static website.
+Static template is a development environment for producing a static website. It integrates `make` w:
+* html fragments --> html
+* typescript --> javascript
+* sass --> prefixing --> css
+* linting
+* staging and deployment
+
 
 Fair warning! This build system is NOT tested!
 
-## Min Requirements:
+## Dependencies
 
-From OS:
 1) Linux
 2) bash
 3) make
 4) rsync
-5) npx (optional, needs npm/node)
-6) tsc (optional, needs npm/node)
+5) npm (optional)
+	- npx (optional, needs npm/node)
+	- tsc (optional, needs npm/node)
 
-### Other Optional Deps:
+More:
 
-`build_tools/sources` this is is git-module stuff, explained below
-`build_tools/toolchain` this is mainly npm stuff that is installed through their package manager.
+`build_tools/sources` contains `git-module` stuff
 
-## Key features are:
+`build_tools/toolchain` contains mainly `npm` stuff that is installed through their package manager.
+
+(both explained below)
+
+## Key features:
 
 1) Static HTML Compilation
 2) CSS Compilation
