@@ -1,10 +1,11 @@
-export ROOT_DIR="$(git rev-parse --show-toplevel)"
+ROOT_DIR:=$(shell git rev-parse --show-toplevel)
+export ROOT_DIR
 -include ${ROOT_DIR}/conf/make.conf
-export OUTPUT_DIR="$(realpath $ROOT_DIR/compiled/public)"
-export STAGE_DIR="$(realpath $ROOT_DIR/compiled/stage)"
-export DEPLOY_DIR="$(realpath $ROOT_DIR/compiled/deploy)"
+export OUTPUT_DIR=$(ROOT_DIR)/compiled/public
+export STAGE_DIR=$(ROOT_DIR)/compiled/stage
+export DEPLOY_DIR=$(ROOT_DIR)/compiled/deploy
 
-export WEBPACK_MODE = "development"
+#export WEBPACK_MODE:=development
 
 .PHONY: all clean raw css stage lint eslint lintspell clean_css clean_js js # TODO EXPAND THIS
 
@@ -13,85 +14,101 @@ default-raw: clean raw
 default-js: clean_js js
 default-css: clean_css css 
 
-stage: export OUTPUT_DIR="$(STAGE_DIR)"
-stage: export SYNC_DIR="$(STAGE_SYNC_DIR)"
+stage: export OUTPUT_DIR=$(STAGE_DIR)
+stage: export SYNC_DIR=$(STAGE_SYNC_DIR)
 stage: all sync
 
-stage-css: export OUTPUT_DIR="$(STAGE_DIR)"
-stage-css: export SYNC_DIR="$(STAGE_SYNC_DIR)"
+stage-css: export OUTPUT_DIR=$(STAGE_DIR)
+stage-css: export SYNC_DIR=$(STAGE_SYNC_DIR)
 stage-css: default-css sync
 
-stage-js: export OUTPUT_DIR="$(STAGE_DIR)"
-stage-js: export SYNC_DIR="$(STAGE_SYNC_DIR)"
+stage-js: export OUTPUT_DIR=$(STAGE_DIR)
+stage-js: export SYNC_DIR=$(STAGE_SYNC_DIR)
 stage-js: default-js sync
 
-stage-raw: export OUTPUT_DIR="$(STAGE_DIR)"
-stage-raw: export SYNC_DIR="$(STAGE_SYNC_DIR)"
+stage-raw: export OUTPUT_DIR=$(STAGE_DIR)
+stage-raw: export SYNC_DIR=$(STAGE_SYNC_DIR)
 stage-raw: clean raw sync
 
-restage: export OUTPUT_DIR="$(STAGE_DIR)"
-restage: export SYNC_DIR="$(STAGE_SYNC_DIR)"
+restage: export OUTPUT_DIR=$(STAGE_DIR)
+restage: export SYNC_DIR=$(STAGE_SYNC_DIR)
 restage: sync
 
-deploy: export WEBPACK_MODE = "production"
-deploy: export OUTPUT_DIR="$(DEPLOY_DIR)"
-deploy: export SYNC_DIR="$(PRODUCTION_SYNC_DIR)"
+deploy: export WEBPACK_MODE=production
+deploy: export OUTPUT_DIR=$(DEPLOY_DIR)
+deploy: export SYNC_DIR=$(PRODUCTION_SYNC_DIR)
 deploy: all sync
 
-deploy-css: export OUTPUT_DIR="$(DEPLOY_DIR)"
-deploy-css: export SYNC_DIR="$(PRODUCTION_SYNC_DIR)"
+deploy-css: export OUTPUT_DIR=$(DEPLOY_DIR)
+deploy-css: export SYNC_DIR=$(PRODUCTION_SYNC_DIR)
 deploy-css: default-css sync
 
-deploy-js: export WEBPACK_MODE = "production"
-deploy-js: export OUTPUT_DIR="$(DEPLOY_DIR)"
-deploy-js: export SYNC_DIR="$(PRODUCTION_SYNC_DIR)"
+deploy-js: export WEBPACK_MODE=production
+deploy-js: export OUTPUT_DIR=$(DEPLOY_DIR)
+deploy-js: export SYNC_DIR=$(PRODUCTION_SYNC_DIR)
 deploy-js: default-js sync
 
-deploy-raw: export OUTPUT_DIR="$(DEPLOY_DIR)"
-deploy-raw: export SYNC_DIR="$(PRODUCTION_SYNC_DIR)"
+deploy-raw: export OUTPUT_DIR=$(DEPLOY_DIR)
+deploy-raw: export SYNC_DIR=$(PRODUCTION_SYNC_DIR)
 deploy-raw: clean raw sync
 
-redeploy: export OUTPUT_DIR="$(DEPLOY_DIR)"
-redeploy: export SYNC_DIR="$(PRODUCTION_SYNC_DIR)"
+redeploy: export OUTPUT_DIR=$(DEPLOY_DIR)
+redeploy: export SYNC_DIR=$(PRODUCTION_SYNC_DIR)
 redeploy: sync
 
-sync: 
-	ifeq (, $(SYNC_DIR))
-		echo "****"
-		echo "Missing STAGE_SYNC_DIR or PRODUCTION_SYNC_DIR in conf/make.conf, please see README.md"
-		echo "Exiting"
-		echo "****"
-		exit 0
-	endif
-		rsync -tr --delete $(OUTPUT_DIR) $(STAGE_DIR)
+sync:
+	@echo "***sync***"
+ifeq ($(SYNC_DIR),)
+	@echo "****"
+	@echo "Missing STAGE_SYNC_DIR or PRODUCTION_SYNC_DIR in conf/make.conf, please see README.md"
+	@echo "Exiting"
+	@echo "****"
+else
+	rsync -tr --delete $(OUTPUT_DIR) $(SYNC_DIR)
+endif
 
-clean: 
+clean:
+	@echo "***clean***"
 	sudo -E -u nobody -- rm ${OUTPUT_DIR}/* -rf
+
 clean_css: 
+	@echo "***clean_css***"
 	sudo -E -u nobody -- rm ${ROOT_DIR}/compiled/css/* ${OUTPUT_DIR}/css/* -rf
 
 clean_js: 
+	@echo "***clean_js***"
 	sudo -E -u nobody -- rm ${ROOT_DIR}/compiled/js/* ${OUTPUT_DIR}/js/* -rf
 
 raw: 
-	sudo -E -u nobody -- OUTPUT_DIR=${OUTPUT_DIR}/js build_scripts/main ${ROOT_DIR}/compiled/js
-	sudo -E -u nobody -- OUTPUT_DIR=${OUTPUT_DIR}/css build_scripts/main ${ROOT_DIR}/compiled/css
+	@echo "***raw***"
+	sudo -E -u nobody -- mkdir -p $(OUTPUT_DIR)/js
+	sudo -E -u nobody -- mkdir -p $(OUTPUT_DIR)/css
+	OUTPUT_DIR=${OUTPUT_DIR}/js sudo -E -u nobody -- build_scripts/main ${ROOT_DIR}/compiled/js
+	OUTPUT_DIR=${OUTPUT_DIR}/css sudo -E -u nobody -- build_scripts/main ${ROOT_DIR}/compiled/css
 	sudo -E -u nobody -- build_scripts/main
 
 css:
+	@echo "***css***"
 	sudo -E -u nobody -- build_scripts/css
-	sudo -E -u nobody -- OUTPUT_DIR=${OUTPUT_DIR}/css build_scripts/main ${ROOT_DIR}/compiled/css
+	sudo -E -u nobody -- mkdir -p $(OUTPUT_DIR)/css
+	OUTPUT_DIR=${OUTPUT_DIR}/css sudo -E -u nobody -- build_scripts/main ${ROOT_DIR}/compiled/css
 
 js:
+	@echo "***js***"
 	sudo -E -u nobody -- build_scripts/jstranspile
-	sudo -E -u nobody -- OUTPUT_DIR=${OUTPUT_DIR}/js build_scripts/main ${ROOT_DIR}/compiled/js
+	sudo -E -u nobody -- mkdir -p $(OUTPUT_DIR)/js
+	OUTPUT_DIR=${OUTPUT_DIR}/js sudo -E -u nobody -- build_scripts/main ${ROOT_DIR}/compiled/js
 
 lint: 
+	@echo "***lint***"
 	sudo -E -u nobody -- build_scripts/lint
 
 lintspell: export INTERACTIVE=true
 lintspell:
+	@echo "***lintspell***"
 	sudo -E -u nobody -- /bin/bash build_scripts/lint
+
 eslint:
-	build_scripts/eslint
+	@echo "***eslint***"
+	sudo -E -u nobody -- build_scripts/eslint
 
