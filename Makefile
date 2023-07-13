@@ -1,11 +1,12 @@
-ROOT_DIR:=$(shell git rev-parse --show-toplevel)
+ROOT_DIR!= git rev-parse --show-toplevel
 export ROOT_DIR
--include ${ROOT_DIR}/conf/make.conf
+include ${ROOT_DIR}/conf/make.conf
+export STAGE_SYNC_DIR
+export PRODUCTION_SYNC_DIR
 export OUTPUT_DIR=$(ROOT_DIR)/compiled/public
 export STAGE_DIR=$(ROOT_DIR)/compiled/stage
 export DEPLOY_DIR=$(ROOT_DIR)/compiled/deploy
-
-#export WEBPACK_MODE:=development
+export WEBPACK_MODE:=development
 
 .PHONY: all clean raw css stage lint eslint lintspell clean_css clean_js js # TODO EXPAND THIS
 
@@ -58,14 +59,10 @@ redeploy: sync
 
 sync:
 	@echo "***sync***"
-ifeq ($(SYNC_DIR),)
-	@echo "****"
-	@echo "Missing STAGE_SYNC_DIR or PRODUCTION_SYNC_DIR in conf/make.conf, please see README.md"
-	@echo "Exiting"
-	@echo "****"
-else
+	@echo SYNC_DIR: $(SYNC_DIR)
+	@ ! [ -z $(SYNC_DIR) ] || echo "You need make.conf, see README"
+	@ ! [ -z $(SYNC_DIR) ]
 	rsync -tr --delete $(OUTPUT_DIR) $(SYNC_DIR)
-endif
 
 clean:
 	@echo "***clean***"

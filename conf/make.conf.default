@@ -1,5 +1,5 @@
 # This is a makefile
 # It needs to set
 #
-# STAGE_SYNC_DIR=
-# PRODUCTION_SYNC_DIR=
+# STAGE_SYNC_DIR:=
+# PRODUCTION_SYNC_DIR:=
