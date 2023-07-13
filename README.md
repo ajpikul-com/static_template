@@ -82,7 +82,7 @@ You can keep javascript in a `raw/js` folder which will overwrite all other java
 
 Everything gets comiled to `compiled/js` before copied to the proper output directory.
 
-### CSS/Sassc
+### CSS/sassc
 
 #### Sass
 
