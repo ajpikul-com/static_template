@@ -1,7 +1,8 @@
 #!/bin/bash
 shopt -s nullglob
-. ${CONF_FILE}
-webpack_func(){ 
+. "${ROOT_DIR}/conf/common.conf"
+OUTPUT_DIR=${ROOT_DIR}/compiled
+webpack_func(){  # also look for npx TODO
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/webpack/package-lock.json ]; then
 		shopt -u nullglob
 		DEBUG_LINE=''
@@ -11,19 +12,20 @@ webpack_func(){
 		if ls -A ${ROOT_DIR}/ts/**/*.ts 2> /dev/null; then
 			shopt -s nullglob
 			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
-			sudo -E -u nobody -- npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/ts/main.ts" --output "${OUTPUT_DIR}/js/bundle.js" --config "${ROOT_DIR}/build_tools/toolchain/webpack/webpack.tsconfig.js"
+			npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/ts/main.ts" --output "${OUTPUT_DIR}/js/bundle.js" --config "${ROOT_DIR}/build_tools/toolchain/webpack/webpack.tsconfig.js"
 			popd
 		elif ls -A ${ROOT_DIR}/js/**/*.js 2> /dev/null; then
 			shopt -s nullglob
 			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
-			sudo -E -u nobody -- npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/js/main.js" --output "${OUTPUT_DIR}/js/bundle.js"
+			npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/js/main.js" --output "${OUTPUT_DIR}/js/bundle.js"
 			popd
 		else
-			return 1
+			echo "Appears there is no javascript"
+			return 0
 		fi
 		shopt -s nullglob
 	else
-		echo "Webpack not found, assuming not used."
+		echo "Webpack not found, assuming not used." 
 		return 1
 	fi
 	return 0
@@ -32,13 +34,13 @@ webpack_func(){
 tsc_func(){ 
 	if ! command -v tsc > /dev/null 2>&1; then
 		echo "To compile typescript, you're expected to install node-typescript in a normal way."
-		echo "You're using vanilla javascript?"
+		echo "You're using vanilla javascript? Peasant."
 		return
 	fi
 	echo "tsc- warning: sourceMap options untested (debugging). Should allow debugging in original"
-	echo "Typescript instead of hwat is compiled to. Definitely works with webpack"
-	sudo -E -u nobody -- mkdir -p "${OUTPUT_DIR}/js" || exit
-	sudo -E -u nobody -- tsc --inlineSourceMap --inlineSources -p "${ROOT_DIR}/ts/" --outDir "${OUTPUT_DIR}/js/"
+	echo "Typescript instead of what is compiled to. Definitely works with webpack"
+	mkdir -p "${OUTPUT_DIR}/js" || exit
+	tsc --inlineSourceMap --inlineSources -p "${ROOT_DIR}/ts/" --outDir "${OUTPUT_DIR}/js/"
 }
 if ! webpack_func; then
 	tsc_func

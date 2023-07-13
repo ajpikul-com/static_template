@@ -1,4 +1,0 @@
-#!/bin/bash
-. ${CONF_FILE}
-echo ${CONF_FILE}: ${OUTPUT_DIR}
-sudo -E -u nobody -- rm ${OUTPUT_DIR}/css -rf

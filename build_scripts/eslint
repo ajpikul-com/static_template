@@ -1,6 +1,6 @@
 #!/bin/bash
 shopt -s nullglob
-. ${CONF_FILE}
+. "${ROOT_DIR}/conf/common.conf"
 
 eslint_func(){
 	echo "eslint"

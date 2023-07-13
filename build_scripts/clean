@@ -1,4 +1,0 @@
-#!/bin/bash
-shopt -s extglob
-. ${CONF_FILE}
-sudo -E -u nobody -- rm ${OUTPUT_DIR}/!(css) -rf

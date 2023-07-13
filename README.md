@@ -1,37 +1,116 @@
-# static template
+# Static Template
 
-Static template is a set of non-content files to facilitate a new website. Like most of my work, this is only guarenteed to work on linux.
+Static template is a development environment for producing a static website.
 
-## quick
+Fair warning! This build system is NOT tested!
 
-If you're not setting up the environment, the three most important folders are `sass/` (which contains css), `raw/` (which is what turns into the webpage), and `fragments/` (which are the library of resuable HTML that `raw/` can use). The `sass` file is compiled to a `css/` folder directly in the output directory.
+## Min Requirements:
 
-### Java/Typescript
+From OS:
+1) Linux
+2) bash
+3) make
+4) rsync
+5) npx (optional, needs npm/node)
+6) tsc (optional, needs npm/node)
 
-There are three folders you might find java/typescript: `raw/js`, `ts/`, `js/` depending on your toolchain. `raw/js` basically means no toolchain or precompiler.
+### Other Optional Deps:
 
-There is an option (in the `build_tools/toolchain` section referenced in #installation) to install and use webpack. Webpack detects whether or not you have a `js/main.js` or a `ts/main.ts` file, and outputs a `js/bundle.js` file to the output directory.
-If you use typescript alone, the `ts/` folder will be compiled to the output directory's `/js` folder in the same way as sass. You're expected to install `tsc` normally.
+`build_tools/sources` this is is git-module stuff, explained below
+`build_tools/toolchain` this is mainly npm stuff that is installed through their package manager.
 
-The `Makefile` will build the `*.contate` files in the `/raw` folder, and copy them all over to the output directory. The output directory is set by a file in `conf/`, and is by default `/public` but has examples for `/stage` and `/deploy`. See the [using](#using) section for Makefile targets.
+## Key features are:
 
-### Important Note About Configuring Typescript
+1) Static HTML Compilation
+2) CSS Compilation
+4) Typescript compilation (w/ or w/o debug)
+3) Linters
+5) Staging/Release deployments
 
-Typescript has its own `import` syntax for separating javascript files into modules (libraries). It uses the `ts/.tsconfig.json` to determine what format to transpile its import syntax to: it could be set to nodejs style, requirejs style (browsers), or many other options for the browser (EMCA2015, etc). What I set mine to doesn't really matter because I use `webpack`, which takes any number of formats and simply pre-compiles it into a optimized `bundle.js` file which is served- no other `.ts` or `.js` source files. So if you use typescript alone, you need to modify `ts/.tsconfig.json` to output modules in a way that makes sense to you: `none`, `commonjs`, `amd`- whatever you decide. I recommend webpack, because the ecosystem here is otherwise a nightmare and generally involve using technologies not entirely supported, or wrapping all your code in lambda functions.
+## Basic Use
 
-## contate
+TODO: Include your usual usual setup for /var/ with ACL
 
-It relies on [contate](https://github.com/autopogo/contate).
+Since `make` attempts to run almost everything as the nobody user, you must, from the main directory:
 
-You should look at contate's instructions. In short, your web pages are parsed as scripts and can pass variables between each other. `*.contate` files in `/raw` will be compiled with contate. Other files will be copied as-is.
-Use conf files to pass global environmental files to your contate files, they all source the `/conf/common` file.
+```
+sudo chown -R nobody:nogroup compiled/
+```
 
-I create a `fragments` folder where common elements are stored.
+Generally, hidden files (`.*`) are ignored.
 
-## installation
+Specify your deployment directories in `conf/make.conf` by setting `STAGE_SYNC_DIR=` and `PRODUCTION_SYNC_DIR=`
 
-Install `tsc` globally if you're using typescript. Everything else has a local install (unless noted).
+`make all` will clean compiled/public/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/public.
 
+`make stage` will clean compiled/stage/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/stage, and sync to your `STAGE_DIR`.
+`make restage` will do the above sync step only.
+
+`make deploy` will clean compiled/deploy/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/deploy.
+`make redeploy` will do the above sync step only.
+
+`default-raw, default-css, default-js, stage-css, stage-js, stage-raw, deploy-css, deploy-js, deploy-raw` are other commands.
+
+If no `STAGE_SYNC_DIR` or `PRODUCTION_SYNC_DIR` is specified, no syncing will occur.
+
+TODO: remove origin and add your own website, readme and updating.
+
+### HTML/Contate
+
+The `raw` directory will be copied into the output folders. `raw/js` and `raw/css` will overwrite whatever `make` generates there from typescript or sass (but during the contate step, not the typescript or sass step, ie running `make css` won't copy over `raw/js`).
+
+If `contate` is not installed, `cp` is used. 
+
+While optional, [contate](https://github.com/ajpikul.com/contate) allows you to write scripts directly into your content. Any `raw/*.contate* will be processed as such with ".contate" removed. Contate sources `/conf/common`. 
+
+To install `contate`, you can use
+
+```bash
+# To install just contate
+git submodule update --init build_tools/sources/contate
+# To install everything in .gitmodules
+git submodule update --init
+```
+
+### Typescript/Javascript
+
+You can keep js in a `raw/js` folder which will overwrite all other sources of js. Or for vanilla js, use a different directory. If `webpack` is installed (via `/build_tools/toolchain/webpack`, where there is a proper config for typescript) and `tsc` is installed, webpack will first look to compile stuff in `ts/` and then in `js/`.  If `tsc` is installed, it will output w/o `webpack`'s help. `tsc` will use `ts/.tsconfig.json`. 
+
+### CSS/Sassc
+
+#### Sass
+
+You can keep css in a `raw/css/` folder which will overwrite anything compiled from sass, if you're using sass. You can also use a different folder altogether and skip the system.
+
+You can put sass files in the `sass/` folder if you want to use sass. You need to have `sassc` installed:
+
+```bash
+git submodule update --init build_tools/sources/sassc
+# or
+git submodule update --init
+```
+In `/build_tools/sources/sassc`
+```
+. scripts/bootstrap
+make
+```
+
+`Sassc` will build everything to `compiled/css` and then copy css to the proper output directory.
+
+#### Prefixer
+
+You can also use a prefixer which will look at your css in `compiled/css` and amend it so that it works in as many browsers as possible. 
+To use the prefixer, you must have it installed.
+TODO what is that non-source folder. must have npx installe for prefixer
+
+#### Linters
+
+##### Spell Checker
+
+`sudo apt-get install aspell` will install a spell checker.
+
+
+#### Other Stuff
 Modify the `Makefile` so that `PRODUCTION_DIR` and `STAGE_DIR` point to your actively served web directories.
 ```
 git clone https://github.com/ayjayt/static_template <my_new_website>`

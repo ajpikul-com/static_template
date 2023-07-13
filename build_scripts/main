@@ -1,18 +1,30 @@
 #!/bin/bash
+set -e
+# Set Input Dir
 
-if sudo -E -u nobody -- command -v contate > /dev/null 2>&1; then
+. "${ROOT_DIR}/conf/common.conf"
+
+if [ -z "${1}" ]; then
+	INPUT_DIR="${ROOT_DIR}/raw"
+else
+	INPUT_DIR="${1}"
+fi
+
+
+if command -v contate > /dev/null 2>&1; then
 	CONTATE=contate
 elif [ -x ./build_tools/sources/contate/build/contate ]; then
-	CONTATE="./build_tools/sources/contate/build/contate"
+	CONTATE="${ROOT_DIR}/build_tools/sources/contate/build/contate"
 	alias contate="${CONTATE}"
 else
-	echo 'contate not found: you can install it from gihub.com/autopogo/contate or `git submodule update --init` and it can be used locally from the static_template repo'
-	exit 1
+	echo "Contate not found! Check README.md! *.contate files won't work!"
 fi
-. ${CONF_FILE}
+
 if [ ! -d "${OUTPUT_DIR}" ]; then
 	echo "Output directory doesn\'t exist"
 	exit 1
 fi
-sudo -E -u nobody -- ${CONTATE} -rc ${CONF_FILE} -o ${OUTPUT_DIR}/ raw/
-sudo -E -u nobody -- rsync -vvrit --exclude '*.contate' --exclude '.*' raw/ ${OUTPUT_DIR}/
+if [ ! -z "${CONTATE}" ]; then
+	${CONTATE} -r -o ${OUTPUT_DIR}/ ${INPUT_DIR}/
+fi
+rsync -vvrit --exclude '*.contate' --exclude '.*' ${INPUT_DIR}/ ${OUTPUT_DIR}/
