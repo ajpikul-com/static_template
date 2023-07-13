@@ -46,9 +46,11 @@ Specify your deployment directories in `conf/make.conf` by setting `STAGE_SYNC_D
 `make all` will clean (erase) `compiled/public/`, build `raw/`, `sass/`, and `ts/|js/` if they are present, and move them all to `compiled/public`.
 
 `make stage` will clean (erase) `compiled/stage/`, build `raw/`, `sass/`, and `ts/|js/` if they are present, move them all to `compiled/stage`, and `rsync` to your `STAGE_SYNC_DIR`.
+
 `make restage` will do the above `rsync` step only.
 
 `make deploy` will clean (erase) `compiled/deploy/`, build `raw/`, `sass/`, and `ts/|js/` if they are present, move them all to `compiled/deploy`, and `rsync` to your `PRODUCTION_SYNC_DIR`.
+
 `make redeploy` will do the above `rsync` step only.
 
 `default-raw, default-css, default-js, stage-css, stage-js, stage-raw, deploy-css, deploy-js, deploy-raw` aren't documented individually, but are intended for your use.
