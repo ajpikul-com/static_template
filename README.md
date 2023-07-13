@@ -109,14 +109,14 @@ make
 You can also use a prefixer which will look at your css in `compiled/css` and amend it so that it works in as many browsers as possible. 
 To use the prefixer, you must have it installed.
 
-#### Linters
+## Linters
 
-##### Spell Checker
+### Spell Checker
 
 `sudo apt-get install aspell` will install a spell checker.
 
 
-#### Other Stuff
+### Other Stuff
 Modify the `Makefile` so that `PRODUCTION_DIR` and `STAGE_DIR` point to your actively served web directories.
 ```
 git clone https://github.com/ayjayt/static_template <my_new_website>`
