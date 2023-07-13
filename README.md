@@ -59,7 +59,7 @@ TODO: remove origin and add your own website, readme and updating.
 
 ### HTML/Contate
 
-The `raw` directory will be copied into the output folders. `raw/js` and `raw/css` will overwrite whatever `make` generates there from typescript or sass (but during the contate step, not the typescript or sass step, ie running `make css` won't copy over `raw/js`).
+The `raw/` directory will be copied into the output folders. `raw/js` and `raw/css` will overwrite whatever `make` generates from typescript or sass.
 
 If `contate` is not installed, `cp` is used. 
 
@@ -74,9 +74,11 @@ git submodule update --init build_tools/sources/contate
 git submodule update --init
 ```
 
+Or just have it installed and in `PATH`.
+
 ### Typescript/Javascript
 
-You can keep js in a `raw/js` folder which will overwrite all other sources of js. Or for vanilla js, use a different directory. If `webpack` is installed (via `/build_tools/toolchain/webpack`, where there is a proper config for typescript) and `tsc` is installed, webpack will first look to compile stuff in `ts/` and then in `js/`.  If `tsc` is installed, it will output w/o `webpack`'s help. `tsc` will use `ts/.tsconfig.json`. 
+You can keep javascript in a `raw/js` folder which will overwrite all other javascript. Or use another folder and don't worry about write order. If `webpack` is installed (via `/build_tools/toolchain/webpack`, where there is a proper `config` for typescript) and `tsc` is installed, `webpack` will first look to compile stuff in `ts/` and then in `js/`, but not both.  If `tsc` is installed, it will output w/o `webpack`'s help. `tsc` will use `ts/.tsconfig.json`. 
 
 ### CSS/Sassc
 
