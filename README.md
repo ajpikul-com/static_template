@@ -43,17 +43,17 @@ sudo chown -R nobody:nogroup compiled/
 Specify your deployment directories in `conf/make.conf` by setting `STAGE_SYNC_DIR=` and `PRODUCTION_SYNC_DIR=`
 
 ### Make Commands 
-`make all` will clean compiled/public/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/public.
+`make all` will clean (erase) `compiled/public/`, build `raw/`, `sass/`, and `ts/|js/` if they are present, and move them all to `compiled/public`.
 
-`make stage` will clean compiled/stage/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/stage, and sync to your `STAGE_DIR`.
-`make restage` will do the above sync step only.
+`make stage` will clean (erase) `compiled/stage/`, build `raw/`, `sass/`, and `ts/|js/` if they are present, move them all to `compiled/stage`, and `rsync` to your `STAGE_SYNC_DIR`.
+`make restage` will do the above `rsync` step only.
 
-`make deploy` will clean compiled/deploy/, build raw/, sass/, and ts/ if they are present, moving them all to compiled/deploy.
-`make redeploy` will do the above sync step only.
+`make deploy` will clean (erase) `compiled/deploy/`, build `raw/`, `sass/`, and `ts/|js/` if they are present, move them all to `compiled/deploy`, and `rsync` to your `PRODUCTION_SYNC_DIR`.
+`make redeploy` will do the above `rsync` step only.
 
-`default-raw, default-css, default-js, stage-css, stage-js, stage-raw, deploy-css, deploy-js, deploy-raw` are other commands.
+`default-raw, default-css, default-js, stage-css, stage-js, stage-raw, deploy-css, deploy-js, deploy-raw` aren't documented individually, but are intended for your use.
 
-If no `STAGE_SYNC_DIR` or `PRODUCTION_SYNC_DIR` is specified, no syncing will occur.
+If no `STAGE_SYNC_DIR` or `PRODUCTION_SYNC_DIR` is specified, no `rsync`ing will occur.
 
 TODO: remove origin and add your own website, readme and updating.
 
