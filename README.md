@@ -30,7 +30,16 @@ More:
 
 ## Basic Use
 
-TODO: Include your usual usual setup for /var/ with ACL
+My deployment and staging directories have special permisions. They're owned by a group, say `web`, and that group can read them and write them. `setfacl` as shown below creates a default permission for everything in the folder.
+
+```
+sudo apt install acl
+chmod g+ws DIRECTORY
+setfacl -d -m g::rwx DIRECTORY
+setfacl -d -m o::rx DIRECTORY
+```
+
+
 
 Generally, hidden files (`.*`) are ignored by this software.
 
@@ -55,7 +64,7 @@ Specify your deployment directories in `conf/make.conf` by setting `STAGE_SYNC_D
 
 If no `STAGE_SYNC_DIR` or `PRODUCTION_SYNC_DIR` is specified, no `rsync`ing will occur.
 
-TODO: remove origin and add your own website, readme and updating.
+At this point, you should remove this readme and turn this directory into your own repository.
 
 ### HTML/Contate
 
@@ -108,13 +117,18 @@ make
 #### Prefixer
 
 You can also use a prefixer which will look at your css in `compiled/css` and amend it so that it works in as many browsers as possible. 
-To use the prefixer, you must have it installed.
+To use the prefixer, you must have it installed in `build_tools/toolchain/prefixer`. There is a README.md there.
 
 ## Linters
 
-### Spell Checker
+### Basic HTML
 
-`sudo apt-get install aspell` will install a spell checker.
+Linters are only used on `public/`. Use `make lint`. This uses an online checker.
+
+#### Spell Checker
+
+`sudo apt-get install aspell` will install a spell checker. We add our own custom dictionary to `toolchain/` (TODO: not sure how dictionary is passed as config). `make lintspell` will make it interactive so you can add words to the dictionary as they are found through the linting.
 
 ### eslint
 
+eslint, `make eslint`- the toolchain must be installed (`build_tools/toolchain/eslint`)

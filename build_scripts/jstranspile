@@ -1,6 +1,11 @@
 #!/bin/bash
 shopt -s nullglob
-. "${ROOT_DIR}/conf/common.conf"
+
+if [ -f "${ROOT_DIR}/conf/common.conf" ]; then
+	. "${ROOT_DIR}/conf/common.conf"
+else
+	. "${ROOT_DIR}/conf/common.conf.default"
+fi
 OUTPUT_DIR=${ROOT_DIR}/compiled
 webpack_func(){  # also look for npx TODO
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/webpack/package-lock.json ]; then

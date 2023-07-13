@@ -1,6 +1,11 @@
 #!/bin/bash
 shopt -s nullglob
-. "${ROOT_DIR}/conf/common.conf"
+
+if [ -f "${ROOT_DIR}/conf/common.conf" ]; then
+	. "${ROOT_DIR}/conf/common.conf"
+else
+	. "${ROOT_DIR}/conf/common.conf.default"
+fi
 
 eslint_func(){
 	echo "eslint"
@@ -14,8 +19,8 @@ eslint_func(){
 		shopt -s nullglob
 		if command -v npx > /dev/null 22>&1; then
 			pushd ${ROOT_DIR}/build_tools/toolchain/eslint/
-			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/ts/**/*.{js,ts}"
-			sudo -E -u nobody -- npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/raw/js/**/*.{js}"
+			npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/ts/**/*.{js,ts}"
+			npx eslint -c "${ROOT_DIR}"/build_tools/toolchain/eslint/.eslintrc* "${ROOT_DIR}/raw/js/**/*.{js}"
 			popd
 		else
 			echo "npx not found"

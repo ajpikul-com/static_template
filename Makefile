@@ -83,16 +83,15 @@ css:
 	sudo -E -u nobody -- OUTPUT_DIR=${OUTPUT_DIR}/css build_scripts/main ${ROOT_DIR}/compiled/css
 
 js:
-	build_scripts/jstranspile
+	sudo -E -u nobody -- build_scripts/jstranspile
 	sudo -E -u nobody -- OUTPUT_DIR=${OUTPUT_DIR}/js build_scripts/main ${ROOT_DIR}/compiled/js
 
-lint: #TODO DIFFERENCE BETWEEN THIS AND LINTSPELL
-	build_scripts/lint
+lint: 
+	sudo -E -u nobody -- build_scripts/lint
 
 lintspell: export INTERACTIVE=true
 lintspell:
-	/bin/bash build_scripts/lint
-
+	sudo -E -u nobody -- /bin/bash build_scripts/lint
 eslint:
 	build_scripts/eslint
 

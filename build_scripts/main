@@ -2,7 +2,11 @@
 set -e
 # Set Input Dir
 
-. "${ROOT_DIR}/conf/common.conf"
+if [ -f "${ROOT_DIR}/conf/common.conf" ]; then
+	. "${ROOT_DIR}/conf/common.conf"
+else
+	. "${ROOT_DIR}/conf/common.conf.default"
+fi
 
 if [ -z "${1}" ]; then
 	INPUT_DIR="${ROOT_DIR}/raw"

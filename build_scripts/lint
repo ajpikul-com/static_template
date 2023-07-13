@@ -1,6 +1,10 @@
 #!/bin/bash
 
-. "${ROOT_DIR}/conf/common.conf"
+if [ -f "${ROOT_DIR}/conf/common.conf" ]; then
+	. "${ROOT_DIR}/conf/common.conf"
+else
+	. "${ROOT_DIR}/conf/common.conf.default"
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -22,22 +26,12 @@ echo -e "${RED}IT CAN MINIFY AND COMPRESS AND SPEED CHECK TOO${NC}"
 echo -e "${RED}BUT THIS NEEDS TO BE FLAGGABLE AS SAID${NC}"
 echo -e "${RED}**********************************************************${NC}"
 
-echo "OUTPUT_DIR: ${OUTPUT_DIR}"
-if [ -z "${OUTPUT_DIR}" ]; then
-	echo -e "${RED}You need to define OUTPUT_DIR so I know what to lint!${NC}"
-	exit
-fi
-
-if [ -z "${ROOT_DIR}" ]; then
-	echo -e "${RED}You need to define ROOT_DIR so I know what to lint!${NC}"
-	exit
-fi
-
 function HTMLBasic {
 	echo -e "${GREEN}Checking... html $1 w/ validator.w3.org${NC}"
 	curl -H "Content-type: text/html; charset=utf-8" \
 		--data-binary @${1} \
 		https://validator.w3.org/nu/?out=gnu 
+	
 	if command -v aspell &> /dev/null; then
 		for line in $(cat "${1}" | aspell -H list); do
 			if [ ! -f "${ROOT_DIR}/build_tools/dictionary" ]; then
