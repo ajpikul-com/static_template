@@ -30,6 +30,15 @@ More:
 
 ## Basic Use
 
+You have directories that are serving the static website. Configure them:
+
+```bash
+cd conf/
+cp make.conf.default make.conf
+nano make.conf # and follow the instructions
+# or your editor of choice
+```
+
 My deployment and staging directories have special permisions. They're owned by a group, say `web`, and that group can read them and write them. `setfacl` as shown below creates a default permission for everything in the folder.
 
 ```
