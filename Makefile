@@ -62,7 +62,7 @@ sync:
 	@echo SYNC_DIR: $(SYNC_DIR)
 	@ ! [ -z $(SYNC_DIR) ] || echo "You need make.conf, see README"
 	@ ! [ -z $(SYNC_DIR) ]
-	rsync -tr --delete $(OUTPUT_DIR) $(SYNC_DIR)
+	rsync -tr --delete $(OUTPUT_DIR)/ $(SYNC_DIR)/
 
 clean:
 	@echo "***clean***"
