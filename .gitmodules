@@ -1,6 +1,9 @@
 [submodule "build_tools/sources/contate"]
 	path = build_tools/sources/contate
-	url = https://github.com/autopogo/contate
+	url = https://github.com/ajpikul-com/contate
+	branch = master
+
 [submodule "build_tools/sources/sassc"]
 	path = build_tools/sources/sassc
 	url = https://github.com/sass/sassc
+	branch = master
