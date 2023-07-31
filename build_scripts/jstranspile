@@ -7,6 +7,7 @@ else
 	. "${ROOT_DIR}/conf/common.conf.default"
 fi
 OUTPUT_DIR=${ROOT_DIR}/compiled
+
 webpack_func(){  # also look for npx TODO
 	if [ -e ${ROOT_DIR}/build_tools/toolchain/webpack/package-lock.json ]; then
 		shopt -u nullglob
@@ -14,18 +15,18 @@ webpack_func(){  # also look for npx TODO
 		if [ "${WEBPACK_MODE}" = "\"development\"" ]; then
 			DEBUG_LINE='--debug --devtool "inline-source-map"'
 		fi
-		if ls -A ${ROOT_DIR}/ts/**/*.ts 2> /dev/null; then
+		if ls -A ${ROOT_DIR}/ts/*.ts 2> /dev/null || ls -A ${ROOT_DIR}/ts/**/*.ts 2> /dev/null; then
 			shopt -s nullglob
 			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
 			npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/ts/main.ts" --output "${OUTPUT_DIR}/js/bundle.js" --config "${ROOT_DIR}/build_tools/toolchain/webpack/webpack.tsconfig.js"
 			popd
-		elif ls -A ${ROOT_DIR}/js/**/*.js 2> /dev/null; then
+		elif ls -A ${ROOT_DIR}/js/*.js 2> /dev/null || ls -A ${ROOT_DIR}/js/**/*.js 2> /dev/null; then
 			shopt -s nullglob
 			pushd ${ROOT_DIR}/build_tools/toolchain/webpack/
 			npx webpack --mode "${WEBPACK_MODE}" $DEBUG_LINE --entry "${ROOT_DIR}/js/main.js" --output "${OUTPUT_DIR}/js/bundle.js"
 			popd
 		else
-			echo "Appears there is no javascript"
+			echo "Appears there is no javascript to process"
 			return 0
 		fi
 		shopt -s nullglob

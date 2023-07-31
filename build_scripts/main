@@ -32,6 +32,6 @@ fi
 if [ ! -z "${CONTATE}" ]; then
 	${CONTATE} -r -o ${OUTPUT_DIR}/ ${INPUT_DIR}/
 fi
-set -o xtrace
-rsync -vvrit --exclude '*.contate' --exclude '.*' ${INPUT_DIR}/ ${OUTPUT_DIR}/
-set +o xtrace
+
+rsync -rit --exclude '*.contate' --exclude '.*' ${INPUT_DIR}/ ${OUTPUT_DIR}/
+

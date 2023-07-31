@@ -1,7 +1,11 @@
+Note:
+
+I know webpack + tsc + prefixer works. Needs a main.ts. Debugging works. I know SASS works. This whole thing is a mess tho.
+
 # Static Template
 
 Static template is a development environment for producing a static website. It integrates `make` with:
-* html fragments --> html
+* raw --> html
 * typescript --> javascript
 * sass --> prefixing --> css
 * linting
