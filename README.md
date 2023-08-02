@@ -1,5 +1,7 @@
 Note:
 
+Also not good for using all the tools to generate multiple typescript projects in the same repo
+
 I know webpack + tsc + prefixer works. Needs a main.ts. Debugging works. I know SASS works. This whole thing is a mess tho.
 
 # Static Template
